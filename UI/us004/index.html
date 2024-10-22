@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Register Complaint/Service</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #eeeeee;
+        margin: 0;
+        padding: 0;
+        color: #3b1e54;
+      }
+
+      .container {
+        margin: 50px auto;
+        background-color: #d4bee4;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        max-width: 800px;
+      }
+
+      .header {
+        background-color: #9b7ebd;
+        color: white;
+        padding: 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .header a {
+        color: white;
+        margin-right: 20px;
+        text-decoration: none;
+        font-size: 18px;
+      }
+
+      .menu a {
+        color: white;
+        margin-right: 20px;
+        text-decoration: none;
+        font-size: 18px;
+      }
+
+      .logout {
+        margin-left: auto;
+        color: white;
+      }
+
+      form {
+        margin-top: 20px;
+      }
+
+      label {
+        display: block;
+        margin-top: 12px;
+        color: #3b1e54;
+        font-weight: bold;
+      }
+
+      input[type="text"],
+      textarea,
+      select {
+        width: -webkit-fill-available;
+        padding: 10px;
+        margin-top: 5px;
+        border: 1px solid #9b7ebd;
+        border-radius: 6px;
+        background-color: #eeeeee;
+      }
+
+      textarea {
+        resize: vertical;
+      }
+
+      .actions {
+        margin-top: 20px;
+        text-align: center;
+      }
+
+      .actions button {
+        padding: 12px 20px;
+        border: none;
+        background-color: #3b1e54;
+        color: white;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 16px;
+      }
+
+      .actions button.cancel {
+        background-color: #9b7ebd;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="header">
+      <div class="menu">
+        <a href="#" id="homeLink">Home</a>
+        <a
+          href="#"
+          id="payBillLink"
+          onclick="window.location.href='../us002/index.html' "
+          >Pay Bill</a
+        >
+        <a
+          href="#"
+          id="registerComplaintLink"
+          onclick="window.location.href='../us003/index.html' "
+          >Register Complaint</a
+        >
+        <a href="#" id="complaintStatusLink">Complaint Status</a>
+      </div>
+      <div class="logout">
+        Welcome, <span id="usernameDisplay">User</span> |
+        <a href="#" id="logoutLink">Logout</a>
+      </div>
+    </div>
+
+    <div class="container">
+      <h2>Register Complaint/Service</h2>
+      <form id="complaintForm">
+        <label for="complaintType">Complaint/Service Type</label>
+        <select id="complaintType">
+          <option value="Billing">Billing related</option>
+          <option value="Voltage">Voltage related</option>
+          <option value="Disruption">Frequent disruption</option>
+          <option value="Street Light">Street light related</option>
+          <option value="Pole">Pole related</option>
+        </select>
+
+        <label for="category">Category</label>
+        <select id="category">
+          <!-- Categories will be populated based on complaint type -->
+        </select>
+
+        <label for="contactPerson">Contact Person</label>
+        <input type="text" id="contactPerson" required />
+
+        <label for="landmark">Landmark</label>
+        <input type="text" id="landmark" required />
+
+        <label for="consumerNo">Consumer No</label>
+        <input
+          type="text"
+          id="consumerNo"
+          minlength="13"
+          maxlength="13"
+          required
+        />
+
+        <label for="description">Problem Description</label>
+        <textarea id="description" rows="4" required></textarea>
+
+        <label for="mobile">Mobile Number</label>
+        <input type="text" id="mobile" minlength="10" maxlength="10" required />
+
+        <label for="address">Address</label>
+        <textarea id="address" rows="3" required></textarea>
+
+        <div class="actions">
+          <button type="submit">Submit Complaint</button>
+          <button type="button" class="cancel" id="cancelButton">Cancel</button>
+        </div>
+      </form>
+    </div>
+
+    <script>
+      const complaintForm = document.getElementById("complaintForm");
+      const categoryDropdown = document.getElementById("category");
+      const complaintTypeDropdown = document.getElementById("complaintType");
+      const cancelButton = document.getElementById("cancelButton");
+
+      const categories = {
+        Billing: ["Overcharge", "Missing payment", "Incorrect bill"],
+        Voltage: ["Low voltage", "Voltage fluctuation"],
+        Disruption: ["Unscheduled outage", "Recurrent outages"],
+        "Street Light": ["Light malfunction", "Street light missing"],
+        Pole: ["Broken pole", "Pole leaning"],
+      };
+
+      complaintTypeDropdown.addEventListener("change", function () {
+        const selectedType = complaintTypeDropdown.value;
+        const relevantCategories = categories[selectedType] || [];
+        categoryDropdown.innerHTML = relevantCategories
+          .map((category) => `<option value="${category}">${category}</option>`)
+          .join("");
+      });
+
+      complaintForm.addEventListener("submit", function (event) {
+        event.preventDefault();
+        alert("Complaint submitted successfully. Your complaint ID is: C12345");
+      });
+
+      cancelButton.addEventListener("click", function () {
+        complaintForm.reset();
+      });
+
+      document
+        .getElementById("logoutLink")
+        .addEventListener("click", function () {
+          alert("You have been logged out.");
+          location.reload();
+        });
+
+      // Populate initial categories
+      complaintTypeDropdown.dispatchEvent(new Event("change"));
+    </script>
+  </body>
+</html>

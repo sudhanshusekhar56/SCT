@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Customer Login and Bill Payment</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #eeeeee;
+        margin: 0;
+        padding: 0;
+        color: #3b1e54;
+      }
+
+      .container {
+        margin: auto;
+        background-color: #d4bee4;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      }
+
+      .section {
+        max-width: 600px;
+        margin: auto;
+      }
+
+      .spread {
+        display: flex;
+        justify-content: center;
+        gap: 4rem;
+      }
+
+      #home {
+        text-align: center;
+        font-size: 2rem;
+        height: 90vh;
+      }
+      .login {
+        margin-top: 8rem;
+        max-width: 600px;
+      }
+
+      h2 {
+        text-align: center;
+        color: #3b1e54;
+      }
+
+      label {
+        display: block;
+        margin-top: 12px;
+        color: #3b1e54;
+        font-weight: bold;
+      }
+
+      input[type="text"],
+      input[type="password"],
+      input[type="number"],
+      input[type="month"] {
+        width: -webkit-fill-available;
+        padding: 10px;
+        margin-top: 5px;
+        border: 1px solid #9b7ebd;
+        border-radius: 6px;
+        background-color: #eeeeee;
+      }
+
+      .actions {
+        margin-top: 20px;
+        text-align: center;
+      }
+
+      .actions input[type="submit"] {
+        padding: 12px 20px;
+        border: none;
+        background-color: #3b1e54;
+        color: white;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 16px;
+      }
+
+      .header {
+        background-color: #9b7ebd;
+        color: white;
+        padding: 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .header a {
+        color: white;
+        margin-right: 20px;
+        text-decoration: none;
+      }
+
+      .menu a {
+        color: white;
+        margin-right: 20px;
+        text-decoration: none;
+        font-size: 18px;
+      }
+
+      .logout {
+        margin-left: auto;
+      }
+
+      .bill {
+        margin: 20px 0;
+      }
+
+      .bill label {
+        display: flex;
+        justify-content: space-between;
+      }
+
+      .total {
+        font-weight: bold;
+        text-align: right;
+      }
+
+      .pay-button,
+      .make-payment-button {
+        background-color: #3b1e54;
+        color: white;
+        padding: 10px 20px;
+        border-radius: 6px;
+        border: none;
+        cursor: pointer;
+        display: block;
+        margin: 20px 0;
+        text-align: center;
+      }
+
+      .pay-button:hover,
+      .make-payment-button:hover {
+        opacity: 0.85;
+      }
+
+      .download-button {
+        background-color: #9b7ebd;
+        color: white;
+        padding: 10px 20px;
+        border-radius: 6px;
+        border: none;
+        cursor: pointer;
+      }
+
+      .hidden {
+        display: none;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="header hidden" id="header">
+      <div class="menu">
+        <a href="#" id="homeLink">Home</a>
+        <a
+          href="#"
+          id="payBillLink"
+          onclick="window.location.href='../us002/index.html' "
+          >Pay Bill</a
+        >
+        <a
+          href="#"
+          id="registerComplaintLink"
+          onclick="window.location.href='../us003/index.html' "
+          >Register Complaint</a
+        >
+        <a href="#" id="complaintStatusLink">Complaint Status</a>
+      </div>
+      <div class="logout">
+        Welcome, <span id="usernameDisplay"></span> |
+        <a href="#" id="logoutLink">Logout</a>
+      </div>
+    </div>
+    <div class="container hidden" id="home">Welcome to our website.</div>
+
+    <div class="container login" id="loginForm">
+      <h2>Customer Login</h2>
+      <form id="login">
+        <label for="userId">User ID</label>
+        <input type="text" id="userId" required />
+
+        <label for="password">Password</label>
+        <input type="password" id="password" required />
+
+        <div class="actions">
+          <input type="submit" value="Login" />
+        </div>
+      </form>
+    </div>
+
+    <div class="container hidden" id="homePage">
+      <div id="billSection">
+        <div class="section">
+          <h2>Payment Details</h2>
+          <label> Bill Amount: $<span id="billAmount">0</span></label>
+          <label>PG Charge: $<span id="pgCharge">5</span></label>
+          <label>Total Payable Amount: $<span id="totalPayable">5</span></label>
+          <div>
+            <label for="paymentMode">Mode of Payment</label>
+            <select id="paymentMode">
+              <option value="Debit">Debit Card</option>
+              <option value="Credit">Credit Card</option>
+            </select>
+          </div>
+          <div class="spread">
+            <button class="pay-button" id="payNow">Pay Now</button>
+            <button class="pay-button" id="backToHome">Back to Home</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="container hidden" id="cardDetailsPage">
+      <h2>Enter Card Details</h2>
+      <div class="section">
+        <label for="cardNumber">Credit Card Number</label>
+        <input
+          type="number"
+          id="cardNumber"
+          min="1000000000000000"
+          placeholder="Enter 16-digit card number"
+        />
+
+        <label for="cardHolderName">Card Holder Name</label>
+        <input
+          type="text"
+          id="cardHolderName"
+          minlength="10"
+          placeholder="Enter cardholder's name"
+        />
+
+        <label for="expiryDate">Expiry Date</label>
+        <input type="month" id="expiryDate" />
+
+        <label for="cvv">CVV</label>
+        <input
+          type="number"
+          id="cvv"
+          min="100"
+          max="999"
+          placeholder="Enter 3-digit CVV"
+        />
+
+        <button class="make-payment-button" id="makePayment">
+          Make Payment
+        </button>
+      </div>
+    </div>
+
+    <div class="container hidden" id="transactionPage">
+      <h2>Payment Successful</h2>
+      <div class="section">
+        <p>Transaction Details:</p>
+        <p>
+          <strong>Bill Amount:</strong> $<span id="transactionBillAmount"
+            >0</span
+          >
+        </p>
+        <p><strong>PG Charge:</strong> $5</p>
+        <p>
+          <strong>Total Paid:</strong> $<span id="transactionTotalPaid">0</span>
+        </p>
+        <button class="download-button" id="downloadReceipt">
+          Download Receipt
+        </button>
+      </div>
+    </div>
+
+    <script>
+      const loginForm = document.getElementById("loginForm");
+      const homePage = document.getElementById("homePage");
+      const header = document.getElementById("header");
+      const cardDetailsPage = document.getElementById("cardDetailsPage");
+      const transactionPage = document.getElementById("transactionPage");
+      const home = document.getElementById("home");
+      const billAmount = 100;
+      const pgCharge = 5;
+
+      const usernameDisplay = document.getElementById("usernameDisplay");
+      let currentUser = "";
+
+      document
+        .getElementById("login")
+        .addEventListener("submit", function (event) {
+          event.preventDefault();
+          currentUser = document.getElementById("userId").value;
+          usernameDisplay.textContent = currentUser;
+          loginForm.classList.add("hidden");
+          header.classList.remove("hidden");
+          homePage.classList.remove("hidden");
+          document.getElementById("billAmount").textContent = billAmount;
+          document.getElementById("totalPayable").textContent =
+            billAmount + pgCharge;
+        });
+
+      document.getElementById("payNow").addEventListener("click", function () {
+        homePage.classList.add("hidden");
+        cardDetailsPage.classList.remove("hidden");
+      });
+
+      document
+        .getElementById("backToHome")
+        .addEventListener("click", function () {
+          cardDetailsPage.classList.add("hidden");
+          home.classList.remove("hidden");
+          homePage.classList.add("hidden");
+        });
+
+      document
+        .getElementById("makePayment")
+        .addEventListener("click", function () {
+          const cardNumber = document.getElementById("cardNumber").value;
+          const cardHolderName =
+            document.getElementById("cardHolderName").value;
+          const expiryDate = document.getElementById("expiryDate").value;
+          const cvv = document.getElementById("cvv").value;
+
+          if (
+            cardNumber.length === 16 &&
+            cardHolderName.length >= 5 &&
+            expiryDate &&
+            cvv.length === 3
+          ) {
+            cardDetailsPage.classList.add("hidden");
+            transactionPage.classList.remove("hidden");
+            document.getElementById("transactionBillAmount").textContent =
+              billAmount;
+            document.getElementById("transactionTotalPaid").textContent =
+              billAmount + pgCharge;
+          } else {
+            alert("Please enter valid card details.");
+          }
+        });
+
+      document
+        .getElementById("downloadReceipt")
+        .addEventListener("click", function () {
+          const transactionDetails = `
+        Bill Amount: $${billAmount}
+        PG Charge: $${pgCharge}
+        Total Paid: $${billAmount + pgCharge}
+      `;
+          const blob = new Blob([transactionDetails], { type: "text/plain" });
+          const link = document.createElement("a");
+          link.href = URL.createObjectURL(blob);
+          link.download = "receipt.txt";
+          link.click();
+        });
+
+      document
+        .getElementById("logoutLink")
+        .addEventListener("click", function () {
+          loginForm.classList.remove("hidden");
+          transactionPage.classList.add("hidden");
+          cardDetailsPage.classList.add("hidden");
+          homePage.classList.add("hidden");
+        });
+    </script>
+  </body>
+</html>
