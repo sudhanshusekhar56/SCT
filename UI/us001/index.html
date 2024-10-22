@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Consumer Self-Registration</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #eeeeee;
+        padding: 20px;
+        color: #3b1e54;
+      }
+
+      .container {
+        width: 40rem;
+        margin: auto;
+        padding: 20px;
+        background-color: #d4bee4;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        border-radius: 8px;
+      }
+
+      h2 {
+        text-align: center;
+        color: #3b1e54;
+      }
+
+      label {
+        display: block;
+        margin-top: 12px;
+        color: #3b1e54;
+        font-weight: bold;
+      }
+
+      select,
+      input[type="text"],
+      input[type="email"],
+      input[type="password"] {
+        width: -webkit-fill-available;
+        padding: 10px;
+        margin-top: 5px;
+        border: 1px solid #9b7ebd;
+        border-radius: 6px;
+        background-color: #eeeeee;
+      }
+
+      .actions {
+        margin-top: 20px;
+        text-align: center;
+      }
+
+      .actions input[type="submit"],
+      .actions input[type="reset"] {
+        padding: 12px 20px;
+        border: none;
+        background-color: #3b1e54;
+        color: white;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 16px;
+      }
+
+      .actions input[type="reset"] {
+        background-color: #9b7ebd;
+      }
+
+      .actions input[type="submit"]:hover,
+      .actions input[type="reset"]:hover {
+        opacity: 0.85;
+      }
+
+      .acknowledgment {
+        display: none;
+        margin-top: 20px;
+        text-align: center;
+        background-color: #eeeeee;
+        padding: 20px;
+        border-radius: 6px;
+        border: 1px solid #9b7ebd;
+      }
+
+      .acknowledgment h3 {
+        color: green;
+      }
+
+      .acknowledgment span {
+        display: block;
+        margin-top: 10px;
+        color: #3b1e54;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h2>Consumer Registration</h2>
+      <form id="registrationForm">
+        <label for="billNumber">Bill Number (Last 5 digits)</label>
+        <input type="text" id="billNumber" maxlength="5" required />
+
+        <label for="title">Title</label>
+        <select id="title" required>
+          <option value="">Select Title</option>
+          <option value="Mr">Mr.</option>
+          <option value="Mrs">Mrs.</option>
+        </select>
+
+        <label for="name">Customer Name</label>
+        <input type="text" id="name" maxlength="50" required />
+
+        <label for="email">Email</label>
+        <input type="email" id="email" required />
+
+        <label for="mobile">Mobile Number</label>
+        <select id="countryCode" required>
+          <option value="+92">+92 (Pakistan)</option>
+          <option value="+91">+91 (India)</option>
+        </select>
+        <input
+          type="text"
+          id="mobile"
+          maxlength="10"
+          placeholder="10-digit number"
+          required
+        />
+
+        <label for="userId">User ID</label>
+        <input type="text" id="userId" minlength="5" maxlength="20" required />
+
+        <label for="password">Password</label>
+        <input type="password" id="password" maxlength="30" required />
+
+        <label for="confirmPassword">Confirm Password</label>
+        <input type="password" id="confirmPassword" maxlength="30" required />
+
+        <div class="actions">
+          <input type="submit" value="Register" />
+          <input type="reset" value="Reset" />
+        </div>
+      </form>
+
+      <div class="acknowledgment" id="ackMessage">
+        <h3>Consumer Registration successful.</h3>
+        <span id="ackCustomerId"></span>
+        <span id="ackCustomerName"></span>
+        <span id="ackCustomerEmail"></span>
+      </div>
+    </div>
+
+    <script>
+      const form = document.getElementById("registrationForm");
+      const ackMessage = document.getElementById("ackMessage");
+      const ackCustomerId = document.getElementById("ackCustomerId");
+      const ackCustomerName = document.getElementById("ackCustomerName");
+      const ackCustomerEmail = document.getElementById("ackCustomerEmail");
+
+      form.addEventListener("submit", function (event) {
+        event.preventDefault();
+
+        const password = document.getElementById("password").value;
+        const confirmPassword =
+          document.getElementById("confirmPassword").value;
+
+        if (password !== confirmPassword) {
+          alert("Passwords do not match!");
+          return;
+        }
+
+        const consumerId = "C" + Math.floor(Math.random() * 10000000000000);
+        const customerName = document.getElementById("name").value;
+        const email = document.getElementById("email").value;
+
+        ackCustomerId.textContent = "Customer ID: " + consumerId;
+        ackCustomerName.textContent = "Customer Name: " + customerName;
+        ackCustomerEmail.textContent = "Email: " + email;
+
+        form.style.display = "none";
+        ackMessage.style.display = "block";
+      });
+    </script>
+  </body>
+</html>
